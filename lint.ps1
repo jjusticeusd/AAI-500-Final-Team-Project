@@ -1,1 +1,2 @@
-uv run ruff check code/
+.\.venv\Scripts\activate.ps1
+ruff check code/
