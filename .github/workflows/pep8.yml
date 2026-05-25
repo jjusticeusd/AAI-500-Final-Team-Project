@@ -1,0 +1,28 @@
+name: PEP 8 Style Check
+
+on:
+  push:
+    paths:
+      - "code/**/*.py"
+  pull_request:
+    paths:
+      - "code/**/*.py"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dev dependencies
+        run: uv sync --group dev
+
+      - name: Run Ruff PEP 8 check
+        run: uv run ruff check code/ --select E,W
