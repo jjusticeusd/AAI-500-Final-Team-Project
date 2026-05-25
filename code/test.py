@@ -1,5 +1,3 @@
-import os, sys
-import math
 
 x = 1
 y = 2
