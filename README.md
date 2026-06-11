@@ -29,8 +29,16 @@ EDA was performed on the 30,139-record cleaned dataset. Key findings:
 
 # Model Selection
 
-**Model:** Logistic Regression
+**Model:** Logistic Regression (Generalized Linear Model — binomial family, logit link)
 
-The target variable is binary (income ≤$50K / >$50K), making logistic regression the appropriate choice. EDA confirmed that the key predictors — education, age, and hours per week — have monotonic relationships with income, satisfying the model's linearity-in-log-odds assumption. Coefficients are interpretable and come with Wald test p-values, directly supporting the statistical justification required by the project rubric.
+The target variable is binary (income ≤$50K / >$50K), making logistic regression the appropriate choice. Following the Generalized Linear Model framework, logistic regression is fit as a binomial GLM with a logit link estimated via maximum likelihood. EDA confirmed that the key predictors — education, age, and hours per week — have monotonic relationships with income, satisfying the model's linearity-in-log-odds assumption. Coefficients are interpretable as odds ratios and come with Wald test p-values, directly supporting the statistical justification required by the project rubric.
 
-The dataset has a 75/25 class imbalance (documented in EDA). This is addressed via `class_weight='balanced'` and the primary evaluation metric is AUC-ROC rather than raw accuracy.
+## Implementation Approach
+
+- **Dual-library fit:** Logistic regression is fit in `statsmodels` (`GLM` with `family=Binomial()`) for the full inferential summary table (coefficients, standard errors, z-values, p-values, confidence intervals) and in `scikit-learn` for streamlined prediction and metric computation.
+- **Preprocessing:** Categorical features are dummy-encoded with `pd.get_dummies`. `fnlwgt` (a census sampling weight, not a personal attribute) is dropped, and only one of the redundant `education` / `education_num` pair is retained to avoid collinearity.
+- **Train/test split:** 70/30 stratified split to preserve the class ratio in both partitions.
+
+## Class Imbalance & Evaluation
+
+The dataset has a 75/25 class imbalance (documented in EDA). This is addressed via `class_weight='balanced'` and a stratified split. The model is evaluated on the full classification metric suite — **accuracy, precision, recall (sensitivity), specificity, F1 score, and AUROC** — alongside a confusion matrix and ROC curve, rather than relying on raw accuracy.
