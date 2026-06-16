@@ -17,6 +17,9 @@ dependencies = [
 ]
 
 [tool.ruff.lint]
+# Enforce the full pycodestyle (E/W) and pyflakes (F) rule sets so local and CI
+# checks are identical. Configured here as the single source of truth.
+select = ["E", "W", "F"]
 # E402: module-level import not at top of file — expected in notebooks where
 # warnings.filterwarnings('ignore') intentionally precedes other imports
 ignore = ["E402"]

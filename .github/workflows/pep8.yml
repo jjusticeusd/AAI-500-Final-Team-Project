@@ -27,4 +27,4 @@ jobs:
         run: uv sync --group dev
 
       - name: Run Ruff PEP 8 check
-        run: uv run ruff check code/ --select E,W
+        run: uv run ruff check code/
