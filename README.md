@@ -47,10 +47,14 @@ The target variable is binary (income ≤$50K / >$50K), making logistic regressi
 
 ## Implementation Approach
 
-- **Dual-library fit:** Logistic regression is fit in `statsmodels` (`GLM` with `family=Binomial()`) for the full inferential summary table (coefficients, standard errors, z-values, p-values, confidence intervals) and in `scikit-learn` for streamlined prediction and metric computation.
-- **Preprocessing:** Categorical features are dummy-encoded with `pd.get_dummies`. `fnlwgt` (a census sampling weight, not a personal attribute) is dropped, and only one of the redundant `education` / `education_num` pair is retained to avoid collinearity.
+- **Dual-library fit:** Logistic regression is fit in `statsmodels` (`smf.glm` with `family=Binomial()`, using the formula API so categorical terms are encoded via `C()`) for the full inferential summary table (coefficients, standard errors, z-values, p-values, confidence intervals) and in `scikit-learn` for streamlined prediction and metric computation.
+- **Preprocessing:** Categorical features are dummy-encoded with `pd.get_dummies` (`drop_first=True`) for the scikit-learn pipeline. `fnlwgt` (a census sampling weight, not a personal attribute) is dropped, and only one of the redundant `education` / `education_num` pair is retained to avoid collinearity.
 - **Train/test split:** 70/30 stratified split to preserve the class ratio in both partitions.
 
 ## Class Imbalance & Evaluation
 
-The dataset has a 75/25 class imbalance (documented in EDA). This is addressed via `class_weight='balanced'` and a stratified split. The model is evaluated on the full classification metric suite — **accuracy, precision, recall (sensitivity), specificity, F1 score, and AUROC** — alongside a confusion matrix and ROC curve, rather than relying on raw accuracy.
+The dataset has a 75/25 class imbalance (documented in EDA). This is addressed via `class_weight='balanced'` and a stratified split. The model is evaluated on the full classification metric suite — **accuracy, precision, recall (sensitivity), specificity, F1 score, and AUROC** — alongside a confusion matrix, ROC curve, odds-ratio plot, and predicted-probability distribution, rather than relying on raw accuracy.
+
+## Results
+
+On the held-out 30% test set, the model achieves **AUROC = 0.902**, **recall (sensitivity) = 0.835**, **specificity = 0.802**, and **accuracy = 0.810**. The strongest predictors of earning >$50K are marital status (married-civ-spouse, OR ≈ 7.9), sex (male, OR ≈ 2.6), executive/managerial occupation (OR ≈ 2.0), and each additional year of education (OR ≈ 1.3) — all consistent with the EDA findings.
