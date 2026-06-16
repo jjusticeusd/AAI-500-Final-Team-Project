@@ -2,6 +2,18 @@
 
 * **Google Slides Link:** [Final Project Presentation](https://docs.google.com/presentation/d/1ZAVfJUaBqgawWaK1g8_ob_liHWWCKZ1lskQHFtwyO6Y/edit?usp=drive_link)
 
+# Notebooks
+
+The analysis is split across three Jupyter notebooks. Run them in order:
+
+| Notebook | Purpose |
+|---|---|
+| `code/01_data_prep.ipynb` | Loads raw UCI Adult data, removes missing values and duplicates, saves `data/adult_sanitized.csv` |
+| `code/02_eda.ipynb` | Exploratory data analysis — distributions, income rates by feature, chi-square tests |
+| `code/03_modeling.ipynb` | Logistic regression — GLM inferential summary (statsmodels) + prediction metrics and plots (scikit-learn) |
+
+**Setup:** Install dependencies with `uv sync`, then launch JupyterLab with `./start_jupyter.sh`.
+
 # Data Preparation
 
 The Adult dataset was obtained from the UCI Machine Learning Repository. Missing values represented by "?" were identified in the workclass, occupation, and native_country variables. Records containing missing values were removed using listwise deletion. Duplicate records were then identified and removed.

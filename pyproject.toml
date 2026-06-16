@@ -7,12 +7,19 @@ dependencies = [
     "numpy>=1.26",
     "pandas>=2.2",
     "scikit-learn>=1.4",
+    "statsmodels>=0.14",
     "matplotlib>=3.8",
     "seaborn>=0.13",
     "scipy>=1.13",
     "jupyterlab>=4.2",
     "ipykernel>=6.29",
+    "pypdf>=6.13.2",
 ]
+
+[tool.ruff.lint]
+# E402: module-level import not at top of file — expected in notebooks where
+# warnings.filterwarnings('ignore') intentionally precedes other imports
+ignore = ["E402"]
 
 [dependency-groups]
 dev = [
